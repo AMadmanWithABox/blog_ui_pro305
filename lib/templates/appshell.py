@@ -3,7 +3,7 @@ from dash import html, Output, Input, callback, page_container, dcc
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 
-GITHUB_LINK = ""
+GITHUB_LINK = "https://github.com/AMadmanWithABox/blog_ui_pro305"
 APP_NAME = "Blogger"
 APP_ABBR = "B"
 
