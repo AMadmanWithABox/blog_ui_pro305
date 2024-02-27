@@ -1,0 +1,61 @@
+.hero-section {
+  margin: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100vh;
+}
+
+.hero-headline-card {
+  background: #001224;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-headline {
+  font-size: 6em;
+  font-family: sans-serif;
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0) -webkit-gradient(linear, left top, right top, from(#90f3b3), color-stop(#90e9f3), color-stop(#909ff3), color-stop(#cc90f3), color-stop(#f390d1), color-stop(#f39a90), color-stop(#f3e590), to(#b8f390)) repeat scroll 0% 0%/200% 200%;
+  background: rgba(0, 0, 0, 0) linear-gradient(90deg, #90f3b3, #90e9f3, #909ff3, #cc90f3, #f390d1, #f39a90, #f3e590, #b8f390) repeat scroll 0% 0%/200% 200%;
+      background-clip: border-box;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+    -webkit-animation: GradientAnimation 5s ease infinite;
+  animation: GradientAnimation 5s ease infinite;
+}
+
+.sub-section-card-right {
+  margin: 20px;
+  width: 100vw;
+  display: flex;
+  justify-content: right;
+  padding-top: 300px;
+  height: 100vh;
+}
+
+.sub-section {
+  margin: 20px;
+  display: flex;
+  width: 100vw;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.page-content {
+  height: 100%;
+  scroll-snap-type: y mandatory;
+}
+
+.page-content section {
+  scroll-snap-align: start;
+}
+
+
+@keyframes GradientAnimation {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
