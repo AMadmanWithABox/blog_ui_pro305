@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 import os
 import base64
 
+from config import cache
+
 load_dotenv()
 api_gateway = os.getenv('API_GATEWAY')
 
@@ -45,7 +47,7 @@ def create_login():
 
 
 @callback(
-    [Output("login-button", "loading"), Output('session-store', 'data'), Output('url', 'pathname')],
+    [Output("login-button", "loading"), Output('url', 'pathname')],
     [Input("login-button", "n_clicks")],
     [State("username", "value"), State("password", "value")],
     prevent_initial_call=True
@@ -55,21 +57,21 @@ def login_submit(n_clicks, username, password):
         print(f"Username: {username}, Password: {password}")
         try:
             # Make a GET request with basic auth
-            response = requests.get(api_gateway + "/user/username/" + username, auth=HTTPBasicAuth(username, password))
+            response = requests.get(f"{api_gateway}/user/username/{username}", auth=HTTPBasicAuth(username, password))
 
             # Check if the response is successful (HTTP status code 200)
             if response.ok:
                 print("Authentication successful.")
-                # Encode username and password to store in session storage
-                encoded_credentials = base64.b64encode(f"{username}:{password}".encode()).decode()
-                return True, {'username': username, 'password': password}, '/'
+                cache.set("username", username)
+                cache.set("password", password)
+
+                return True, '/'
             else:
                 print("Authentication failed.")
-                return False, {}
+                return False, None
         except Exception as e:
             print(f"An error occurred: {e}")
-            return False, {}
+            return False, None
     return False, None
-
 
 layout = create_login()

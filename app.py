@@ -1,8 +1,9 @@
 import dash_auth
-
-from lib.templates.appshell import create_appshell
 from dash import Dash, html, dcc
 import dash_mantine_components as dmc
+
+from lib.templates.appshell import create_appshell
+from config import cache  # Import the cache
 
 app = Dash(
     __name__,
@@ -10,7 +11,10 @@ app = Dash(
     update_title=None,
 )
 
-app.layout = dmc.MantineProvider(children=[dcc.Store(id='session-store', storage_type='session'), dcc.Location(id='url'), create_appshell()])
+# Initialize the cache with the app's server
+cache.init_app(app.server)
+
+app.layout = dmc.MantineProvider(children=[dcc.Location(id='url'), create_appshell()])
 server = app.server
 
 if __name__ == '__main__':
