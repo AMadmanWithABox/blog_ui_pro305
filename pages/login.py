@@ -38,8 +38,6 @@ def create_login():
                         variant="filled",
                         mt=5
                     ),
-                    dcc.Store(id='session-store', storage_type='session'),
-                    dcc.Location(id='redirect', refresh=True)
                 ]
             ),
         ]
@@ -47,7 +45,7 @@ def create_login():
 
 
 @callback(
-    [Output("login-button", "loading"), Output('session-store', 'data'), Output('redirect', 'pathname')],
+    [Output("login-button", "loading"), Output('session-store', 'data'), Output('url', 'pathname')],
     [Input("login-button", "n_clicks")],
     [State("username", "value"), State("password", "value")],
     prevent_initial_call=True
