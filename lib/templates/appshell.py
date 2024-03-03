@@ -153,7 +153,8 @@ def create_sidebar():
                 ].__add__([
                     dmc.NavLink(
                         label=page.get('name'),
-                        href=page.get('path'),)
+                        href=page.get('path'),
+                    )
                     for page in pages
                 ])
             ),
