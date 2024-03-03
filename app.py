@@ -8,7 +8,7 @@ app = Dash(
     update_title=None,
 )
 
-app.layout = dmc.MantineProvider(children=[dcc.Location('url'), create_appshell()])
+app.layout = dmc.MantineProvider(children=[dcc.Location(id='url'), create_appshell()])
 server = app.server
 
 if __name__ == '__main__':
