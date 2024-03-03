@@ -5,7 +5,9 @@ from dash import Dash, html, dcc
 import dash_mantine_components as dmc
 
 VALID_USERNAME_PASSWORD_PAIRS = {
-    'hello': 'world'
+    'connor1': 'abc123',
+    'carter1': 'abc123',
+    'cantera1': 'abc123'
 }
 
 app = Dash(
@@ -13,6 +15,7 @@ app = Dash(
     use_pages=True,
     update_title=None,
 )
+
 auth = dash_auth.BasicAuth(
     app,
     VALID_USERNAME_PASSWORD_PAIRS
