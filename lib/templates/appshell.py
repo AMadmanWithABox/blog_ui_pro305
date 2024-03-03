@@ -4,7 +4,7 @@ import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 
 GITHUB_LINK = "https://github.com/AMadmanWithABox/blog_ui_pro305"
-APP_NAME = "Blogger"
+APP_NAME = "Blog App"
 APP_ABBR = "B"
 
 
@@ -138,8 +138,6 @@ def create_header():
 
 def create_sidebar():
     pages = dash.page_registry.values()
-    level_1_tags = list()
-    level_2_tags = list()
 
     return html.Div(
         children=[
