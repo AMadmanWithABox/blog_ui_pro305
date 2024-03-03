@@ -50,5 +50,4 @@ def login_submit(n_clicks, username, password):
     return False
 
 
-
 layout = create_login()
