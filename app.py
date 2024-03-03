@@ -1,6 +1,6 @@
 from lib.templates.appshell import create_appshell
-from dash import Dash
-import dash_core_components as dcc
+from dash import Dash, html, dcc
+import dash_mantine_components as dmc
 
 app = Dash(
     __name__,
@@ -8,7 +8,7 @@ app = Dash(
     update_title=None,
 )
 
-app.layout = [dcc.Location('url'), create_appshell()]
+app.layout = dmc.MantineProvider(children=[dcc.Location('url'), create_appshell()])
 server = app.server
 
 if __name__ == '__main__':
