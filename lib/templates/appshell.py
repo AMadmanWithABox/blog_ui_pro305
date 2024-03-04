@@ -226,7 +226,7 @@ def update_header(pathname):
     for page in pages:
         if page["path"] == pathname:
             return page["name"]
-    return "404"
+    return ""
 
 
 @callback(
