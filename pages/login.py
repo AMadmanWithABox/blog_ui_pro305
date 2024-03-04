@@ -47,10 +47,12 @@ def create_login():
 
 
 @callback(
-    [Output("login-button", "loading"), Output('url', 'pathname')],
-    [Input("login-button", "n_clicks")],
-    [State("username", "value"), State("password", "value")],
-    prevent_initial_call=True
+    Output("login-button", "loading"),
+    Output('url', 'pathname', allow_duplicate=True),
+    Input("login-button", "n_clicks"),
+    State("username", "value"),
+    State("password", "value"),
+    prevent_initial_call=True,
 )
 def login_submit(n_clicks, username, password):
     if n_clicks:
