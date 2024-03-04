@@ -18,7 +18,8 @@ dash.register_page(__name__, path_template="/blog/<blog_id>", name="Blog Posts",
 
 
 @callback(
-
+    Output('blog-posts-content', 'children'),
+    [Input('url', 'pathname')]
 )
 def layout(blog_id):
     # TODO: Get blog by id
@@ -40,5 +41,7 @@ def layout(blog_id):
     print(posts)
 
     # TODO: Get blog posts by blog id
-    unfiltered_posts = [{"title": f"title {i}", "content": (f"content {i}" for j in range(1, 1000))} for i in range(5)]
-    filtered_posts = [create_post_card(post) for post in unfiltered_posts]
+    # unfiltered_posts = [{"title": f"title {i}", "content": (f"content {i}" for j in range(1, 1000))} for i in range(5)]
+    filtered_posts = [create_post_card(post) for post in posts]
+
+    return html.Div(children=filtered_posts)
