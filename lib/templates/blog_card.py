@@ -9,12 +9,12 @@ from dotenv import load_dotenv
 load_dotenv()
 api_gateway = os.getenv('API_GATEWAY')
 
+
 def create_blog_card(blog):
     response = requests.get(f"{api_gateway}/user/id/{blog['author']}",
-                                     auth=HTTPBasicAuth(cache.get("username"), cache.get("password")))
+                            auth=HTTPBasicAuth(cache.get("username"), cache.get("password")))
 
     author = response.json()['username']
-
 
     return dmc.Anchor(
         dmc.Card(
@@ -23,7 +23,14 @@ def create_blog_card(blog):
                     dmc.Group(
                         children=[
                             dmc.Text(blog['title'], weight=500, size='lg'),
-                            dmc.Badge(blog['category'], color='blue', variant='light')
+                            dmc.Group(
+                                spacing="sm",
+                                position="right",
+                                children=[
+                                dmc.Badge(author, color='teal', variant='light'),
+                                dmc.Badge(blog['category'], color='blue', variant='light')
+                                ],
+                            )
                         ],
                         position="apart",
                         style={'width': '100%'},

@@ -25,8 +25,7 @@ def layout(blog_id=None):
     blog = requests.get(f"{api_gateway}/blog/id/{blog_id}", auth=HTTPBasicAuth(cache.get("username"),
                                                                                cache.get("password"))).json()
     blog_posts = blog_response.json()
-    blog_title = blog["title"]
-    dash.register_page(__name__, path=f"/blog/{blog_id}", name=blog_title)
+
     posts = []
 
     for post in blog_posts:
