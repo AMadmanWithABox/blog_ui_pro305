@@ -16,6 +16,7 @@ api_gateway = os.getenv('API_GATEWAY')
 
 dash.register_page(__name__, path_template="/blog/<blog_id>", name="Blog Posts", redirect_from=["/blogs"])
 
+
 def layout(blog_id=None):
 
     if blog_id is None:
