@@ -16,14 +16,24 @@ dash.register_page(__name__, path='/blogs', name='Blogs')
 load_dotenv()
 api_gateway = os.getenv('API_GATEWAY')
 
+# Define a container to hold the dynamic content
+layout = html.Div(id='blogs-content')
 
-def create_blogs_content():
+
+# Use a callback to populate the container
+@callback(
+    Output('blogs-content', 'children'),
+    [Input('url', 'pathname')]
+)
+def update_blogs_content(pathname):
     if cache.get('username'):
-        db_response = requests.get(api_gateway + "/blog",
-                                   auth=HTTPBasicAuth(cache.get("username"), cache.get("password")))
+        db_response = requests.get(api_gateway + "/blog", auth=HTTPBasicAuth(cache.get("username"), cache.get("password")))
+        # response_dict = {item['Id']: item for item in response.json()}
+
         blogs = db_response.json()
 
         # Perform your cache-dependent logic here
+        # unfiltered_blogs = [{"title": f"Blog {i}", "category": f"Category {i}", "description": f"Description {i}"} for i in range(1, 6)]
         filtered_blogs = [create_blog_card(blog) for blog in blogs]
     else:
         # Handle the case where cache data is not available
@@ -32,4 +42,3 @@ def create_blogs_content():
     return dmc.Container(id='blogs-content', children=filtered_blogs)
 
 
-layout = create_blogs_content()
