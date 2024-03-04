@@ -16,12 +16,10 @@ api_gateway = os.getenv('API_GATEWAY')
 
 dash.register_page(__name__, path_template="/blog/<blog_id>", name="Blog Posts", redirect_from=["/blogs"])
 
+def layout(blog_id=None):
 
-@callback(
-    Output('blog-posts-content', 'children'),
-    [Input('url', 'pathname')]
-)
-def layout(blog_id):
+    if blog_id is None:
+        return html.Div("No blog id provided.")
     # TODO: Get blog by id
     blog_response = requests.get(f"{api_gateway}/blog/posts/{blog_id}", auth=HTTPBasicAuth(cache.get("username"),
                                                                                            cache.get("password")))
