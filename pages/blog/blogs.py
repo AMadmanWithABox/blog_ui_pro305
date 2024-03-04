@@ -27,9 +27,11 @@ def update_blogs_content(pathname):
         response = requests.get(api_gateway + "/blog", auth=HTTPBasicAuth(cache.get("username"), cache.get("password")))
         # response_dict = {item['Id']: item for item in response.json()}
 
+        blogs = response.json()
+
         # Perform your cache-dependent logic here
         # unfiltered_blogs = [{"title": f"Blog {i}", "category": f"Category {i}", "description": f"Description {i}"} for i in range(1, 6)]
-        filtered_blogs = [create_blog_card(blog) for blog in response.json()]
+        filtered_blogs = [create_blog_card(blog) for blog in blogs]
     else:
         # Handle the case where cache data is not available
         filtered_blogs = [html.P("No blogs available or user not logged in.")]

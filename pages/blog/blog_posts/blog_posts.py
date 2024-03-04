@@ -23,6 +23,10 @@ def layout(blog_id=None):
     # TODO: Get blog by id
     blog_response = requests.get(f"{api_gateway}/blog/posts/{blog_id}", auth=HTTPBasicAuth(cache.get("username"),
                                                                                            cache.get("password")))
+
+    blog = requests.get(f"{api_gateway}/blog/id/{blog_id}", auth=HTTPBasicAuth(cache.get("username"),
+                                                                            cache.get("password"))).json()
+
     blog_posts = blog_response.json()
 
     posts = []
