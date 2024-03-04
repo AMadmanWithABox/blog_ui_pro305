@@ -154,7 +154,7 @@ def create_sidebar():
                     dmc.NavLink(
                         label=page.get('name'),
                         href=page.get('path'),
-                    ) for page in pages if not (page.get('name') == "Home" or page.get('name') == "Blog Posts")
+                    ) for page in pages if not (page.get('name') == "Home" or page.get('name') == "Blog Posts" or page.get('name') == "Blog Post")
                 ])
             ),
         ])

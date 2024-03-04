@@ -41,7 +41,7 @@ def layout(blog_id=None):
 
     #  Get blog posts by blog id unfiltered_posts = [{"title": f"title {i}", "content": (f"content {i}" for j in
     #  range(1, 1000))} for i in range(5)]
-    filtered_posts = [create_post_card(post) for post in posts]
+    filtered_posts = [create_post_card(post, blog_id) for post in posts]
 
     return html.Div(children=filtered_posts)
 
