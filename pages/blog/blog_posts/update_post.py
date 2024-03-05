@@ -12,11 +12,10 @@ import os
 load_dotenv()
 api_gateway = os.getenv('API_GATEWAY')
 
-dash.register_page(__name__, path_template="/create_post/<blog_id>", name="Create Post")
+dash.register_page(__name__, path_template="/update_post/<blog_id>/<post_id>", name="Update Post")
 
 
-def load_layout():
-    return dmc.Container(
+layout = dmc.Container(
         children=[
             dmc.TextInput(
                 label="Title",
@@ -31,8 +30,8 @@ def load_layout():
                 required=True,
             ),
             dmc.Button(
-                "Create Post",
-                id="create-post-button",
+                "Update Post",
+                id="update-post-button",
                 color="blue",
                 variant="filled",
                 mt=5
@@ -42,15 +41,32 @@ def load_layout():
     )
 
 
-layout = load_layout()
+@callback(
+    Output("title", "value"),
+    Output("content", "value"),
+    Input('url', 'pathname'),
+    State("title", "value"),
+    State("content", "value")
+)
+def initial_fill(url, title, content):
+    if title != "":
+        return title, content
+    f = furl(url)
+    # print(f)
+    blog_id = f.path.segments[1]
+    post_id = f.path.segments[2]
+    post = requests.get(f"{api_gateway}/post/id/{post_id}", auth=HTTPBasicAuth(cache.get("username"),
+                                                                                   cache.get("password"))).json()
+    print(post)
+    return post['title'], post['content']
 
 
 @callback(
-    Output("create-post-button", "loading"),
+    Output("update-post-button", "loading"),
     Output('url', 'pathname', allow_duplicate=True),
-    Input("create-post-button", "n_clicks"),
-    State("title", "value"),
-    State("content", "value"),
+    Input("update-post-button", "n_clicks"),
+    Input("title", "value"),
+    Input("content", "value"),
     State('url', 'pathname'),
     prevent_initial_call=True,
 )
@@ -58,18 +74,18 @@ def create_post(n_clicks, title, content, url):
     f = furl(url)
     # print(f)
     blog_id = f.path.segments[1]
-
+    post_id = f.path.segments[2]
     if n_clicks:
         print(f"Title: {title}, Content: {content}")
         try:
             # Make a POST request with basic auth
             if cache.get("username") and cache.get("password"):
-                response = requests.post(f"{api_gateway}/post",
-                                     json={"blog_id": blog_id, "title": title, "content": content},
-                                     auth=HTTPBasicAuth(cache.get("username"), cache.get("password")))
+                response = requests.put(f"{api_gateway}/post",
+                                         json={"post_id": post_id, "title": title, "content": content},
+                                         auth=HTTPBasicAuth(cache.get("username"), cache.get("password")))
             else:
                 return True,
             return False, f"/blog/{blog_id}"
         except Exception as e:
-            return False, f"/create_post/{blog_id}"
-    return False, f"/create_post/{blog_id}"
+            return False, f'/update_post/{blog_id}/{post_id}'
+    return False, f'/update_post/{blog_id}/{post_id}'

@@ -1,5 +1,5 @@
 import dash_auth
-from dash import Dash, html, dcc
+from dash import Dash, html, dcc, State
 import dash_mantine_components as dmc
 
 from lib.templates.appshell import create_appshell
@@ -8,7 +8,7 @@ from config import cache  # Import the cache
 app = Dash(
     __name__,
     use_pages=True,
-    update_title=None,
+    update_title=None
 )
 
 # Initialize the cache with the app's server

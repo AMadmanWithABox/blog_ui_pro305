@@ -26,7 +26,11 @@ def layout(blog_id=None):
 
     blog = requests.get(f"{api_gateway}/blog/id/{blog_id}", auth=HTTPBasicAuth(cache.get("username"),
                                                                                cache.get("password"))).json()
-    print("Blog Author:", blog['Items'][0]['author'])
+    print("Blog:", blog)
+    try:
+        print("Blog Author:", blog['Items'][0]['author'])
+    except:
+        return html.Div(children=[])
 
     response = requests.get(f"{api_gateway}/user/username/{cache.get("username")}",
                             auth=HTTPBasicAuth(cache.get("username"), cache.get("password")))
@@ -48,11 +52,9 @@ def layout(blog_id=None):
         }
         posts.append(post)
 
-    print(posts)
-
     filtered_posts = []
     if blog['Items'][0]['author'] == author:
-        filtered_posts.append(dmc.Button("Create Post", id="create-post", color="blue"))
+        filtered_posts.append(dmc.Button(dmc.Anchor("Create Post", href=f"/create_post/{blog_id}", inherit=True)))
 
     #  Get blog posts by blog id unfiltered_posts = [{"title": f"title {i}", "content": (f"content {i}" for j in
     for i in range(len(posts)):
@@ -60,16 +62,17 @@ def layout(blog_id=None):
 
     return html.Div(children=filtered_posts)
 
-@callback(
-    Output('url', 'pathname', allow_duplicate=True),
-    Input('create-post', 'n_clicks'),
-    State('url', 'pathname'),
-    prevent_initial_call=True
-)
-def create_post(n_clicks, pathname):
-    print("pathname:", pathname)
-    f = str(furl(pathname))
-    blog_id = f.replace("/blog/", "")
-    if n_clicks:
-        return f"/blog/{blog_id}/create_post"
-    return pathname
+# @callback(
+#     Output('url', 'pathname', allow_duplicate=True),
+#     Input('create-post', 'n_clicks'),
+#     State('url', 'pathname'),
+#     prevent_initial_call=True
+# )
+# def create_post(n_clicks, pathname):
+#     f = furl(pathname)
+#     print(f'furl {f}')
+#     blog_id = f.path.segments[1]
+#     print(f'blog_id {blog_id}')
+#     if n_clicks:
+#         return f"/blog/create_post/{blog_id}"
+#     return pathname
