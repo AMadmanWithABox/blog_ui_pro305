@@ -1,7 +1,7 @@
 import dash
 import requests
 from dash import html, dcc, Input, callback, State, Output
-
+import dash_mantine_components as dmc
 from lib.templates.post_card import create_post_card
 
 from config import cache  # Make sure this import is correct
@@ -24,6 +24,10 @@ def layout(blog_id=None):
 
     blog = requests.get(f"{api_gateway}/blog/id/{blog_id}", auth=HTTPBasicAuth(cache.get("username"),
                                                                                cache.get("password"))).json()
+    response = requests.get(f"{api_gateway}/user/id/{blog['author']}",
+                            auth=HTTPBasicAuth(cache.get("username"), cache.get("password")))
+
+    author = response.json()['Id']
     blog_posts = blog_response.json()
 
     posts = []
@@ -43,5 +47,16 @@ def layout(blog_id=None):
     #  range(1, 1000))} for i in range(5)]
     filtered_posts = [create_post_card(post, blog_id) for post in posts]
 
-    return html.Div(children=filtered_posts)
+    return html.Div(children=filtered_posts.insert(0, dmc.Button("Create Post", id="create-post", disabled=blog['author'] != author)))
 
+
+@callback(
+    Output('url', 'pathname'),
+    Input('create-post', 'n_clicks'),
+    State('url', 'pathname'),
+    prevent_initial_call=True
+)
+def create_post(n_clicks, pathname):
+    if n_clicks:
+        return f"{pathname}/post/create"
+    return pathname
