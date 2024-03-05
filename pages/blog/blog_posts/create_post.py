@@ -2,6 +2,8 @@ import dash
 import requests
 from dash import html, dcc, Input, callback, State, Output
 import dash_mantine_components as dmc
+from furl import furl
+
 from lib.templates.post_card import create_post_card
 
 from config import cache  # Make sure this import is correct
@@ -11,6 +13,7 @@ import os
 
 load_dotenv()
 api_gateway = os.getenv('API_GATEWAY')
+
 
 dash.register_page(__name__, path_template="/blog/<blog_id>/create_post", name="Create Post")
 
@@ -53,9 +56,12 @@ layout = dmc.Container(
     State("title", "value"),
     State("category", "value"),
     State("content", "value"),
+    State('url', 'pathname'),
     prevent_initial_call=True,
 )
-def create_post(n_clicks, title, category, content):
+def create_post(n_clicks, title, category, content, url):
+    f = furl(url)
+    blog_id = f.args['blog_id']
     if n_clicks:
         print(f"Title: {title}, Category: {category}, Content: {content}")
         try:
