@@ -25,9 +25,13 @@ def layout(blog_id=None, post_id=None):
     post = requests.get(f"{api_gateway}/post/id/{post_id}", auth=HTTPBasicAuth(cache.get("username"),
                                                                                              cache.get("password"))).json()
     page_layout = dmc.Stack(
+        # children=[
+        #     dmc.Text(post['title'], weight=500, size='xl'),
+        #     dmc.Text(post['content'], size='lg'),
+        # ],
         children=[
-            dmc.Text(post['title'], weight=500, size='xl'),
-            dmc.Text(post['content'], size='lg'),
+            dmc.Text('title', weight=500, size='xl'),
+            dmc.Text('content', size='lg'),
         ],
         style={'width': '100%'}
     )
